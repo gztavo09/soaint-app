@@ -17,6 +17,11 @@ export const CardCategory = styled.h3 `
     text-transform: uppercase;
 `
 
+export const CardContainer = styled(Card)
+`
+    margin-bottom: 35px;
+`
+
 export const CardBody = styled(Body)
 `
     height: 100%;
@@ -24,6 +29,7 @@ export const CardBody = styled(Body)
     display: flex;
     align-items: start;
     flex-direction: column;
+    
     & p {
         text-align: justify;
     }

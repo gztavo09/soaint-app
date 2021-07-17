@@ -1,14 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { CardPrice, CardBody, CardImg, CardCategory } from './styles'
+import { CardPrice, CardBody, CardImg, CardCategory, CardContainer } from './styles'
 import AppContext from '../../context/AppContext'
 import { MdClose } from 'react-icons/md'
 import { Row, Col, Card, Button } from 'react-bootstrap';
+import useGetProducts from '../../hooks/useGetProducts'
 
 const Detail = () => {
     const { id } = useParams()
-    const [ product, setProducts ] = useState([])
-    const [ loading, setLoading ] = useState(false)
+    const [product, loading] = useGetProducts(id)
+
     const { state, addToCart, removeFromCart } = useContext(AppContext)
 
     const [status, setStatus] = useState(() => {
@@ -17,19 +18,6 @@ const Detail = () => {
 
         return isExist.length == 1
     })
-
-    useEffect(() => {
-        setLoading(true)
-        fetch(`https://fakestoreapi.com/products/${id}`)
-            .then(res => res.json())
-            .then(res => {
-                setProducts(res)
-            })
-            .catch(error => console.log(error))
-            .finally(() => setLoading(false))
-
-        return { product, loading };
-    }, [])
 
     const toggleState = (product) => {
         !status ? addToCart(product) : removeFromCart(product)
@@ -40,7 +28,7 @@ const Detail = () => {
         return (
             loading 
             ? <p> Cargando... </p> 
-            :  <Card>
+            :  <CardContainer>
                     <Row>
                         <div className="col-md-4">
                             <CardImg src={product.image} alt=""/>
@@ -57,7 +45,7 @@ const Detail = () => {
                             </CardBody>
                         </div>
                     </Row>
-                </Card>
+                </CardContainer>
         )
     }
 
